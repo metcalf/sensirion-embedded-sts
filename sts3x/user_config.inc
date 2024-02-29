@@ -9,7 +9,7 @@ CONFIG_I2C_TYPE = hw_i2c
 ## the stub.
 ## Note: I'm choosing to put this in the embedded-sts repo instead of embedded-common
 ## to avoid having to update nested submodules a bunch
-# hw_i2c_impl_src = ${sts_driver_dir}/implementations/esp32_i2c_manager_hw_i2c.c
+hw_i2c_impl_src = ${sts_driver_dir}/implementations/esp32_i2c_manager_hw_i2c.c
 
 ## For sw_i2c, configure the GPIO implementation.
 # sw_i2c_impl_src = ${sensirion_common_dir}/sw_i2c/sensirion_sw_i2c_implementation.c

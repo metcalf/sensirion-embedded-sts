@@ -1,0 +1,10 @@
+{
+  "name": "embedded-sts",
+  "version": "0.0.0",
+  "build": {
+    "includeDir": "sts3x",
+    "flags": ["-Ists-common", "-Iembedded-common"],
+    "srcDir": ".",
+    "srcFilter": "+<*> -<utils> -<tests> -<embedded-common/*/**>"
+  }
+}
