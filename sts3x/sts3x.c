@@ -66,24 +66,24 @@ static const uint8_t STS3X_ADDRESS = STS3X_ADDR_PIN_LOW_ADDRESS;
 
 static uint16_t sts3x_cmd_measure = STS3X_CMD_MEASURE_HPM;
 
-int16_t sts3x_measure_blocking_read(int32_t* temperature) {
-    int8_t ret = sts3x_measure();
+int16_t sts3x_measure_blocking_read(uint8_t address, int32_t* temperature) {
+    int8_t ret = sts3x_measure(address);
     if (ret == STATUS_OK) {
 #if !defined(USE_SENSIRION_CLOCK_STRETCHING) || !USE_SENSIRION_CLOCK_STRETCHING
         sensirion_sleep_usec(STS3X_MEASUREMENT_DURATION_USEC);
 #endif /* USE_SENSIRION_CLOCK_STRETCHING */
-        ret = sts3x_read(temperature);
+        ret = sts3x_read(address, temperature);
     }
     return ret;
 }
 
-int16_t sts3x_measure() {
-    return sensirion_i2c_write_cmd(STS3X_ADDRESS, sts3x_cmd_measure);
+int16_t sts3x_measure(uint8_t address) {
+    return sensirion_i2c_write_cmd(address, sts3x_cmd_measure);
 }
 
-int16_t sts3x_read(int32_t* temperature) {
+int16_t sts3x_read(uint8_t address, int32_t* temperature) {
     uint16_t word;
-    int16_t ret = sensirion_i2c_read_words(STS3X_ADDRESS, &word, 1);
+    int16_t ret = sensirion_i2c_read_words(address, &word, 1);
     /**
      * formula for conversion of the sensor signals, optimized for fixed point
      * algebra: Temperature = 175 * S_T / 2^16 - 45
@@ -93,9 +93,9 @@ int16_t sts3x_read(int32_t* temperature) {
     return ret;
 }
 
-int16_t sts3x_probe() {
+int16_t sts3x_probe(uint8_t address) {
     uint16_t status;
-    return sensirion_i2c_delayed_read_cmd(STS3X_ADDRESS,
+    return sensirion_i2c_delayed_read_cmd(address,
                                           STS3X_CMD_READ_STATUS_REG,
                                           STS3X_CMD_DURATION_USEC, &status, 1);
 }
@@ -115,28 +115,28 @@ void sts3x_set_repeatability(uint8_t repeatability) {
     }
 }
 
-int16_t sts3x_heater_on(void) {
-    return sensirion_i2c_write_cmd(STS3X_ADDRESS, STS3X_CMD_HEATER_ON);
+int16_t sts3x_heater_on(uint8_t address) {
+    return sensirion_i2c_write_cmd(address, STS3X_CMD_HEATER_ON);
 }
 
-int16_t sts3x_read_serial(uint32_t* serial) {
+int16_t sts3x_read_serial(uint8_t address, uint32_t* serial) {
     int16_t ret;
     uint8_t serial_bytes[4];
 
-    ret = sensirion_i2c_write_cmd(STS3X_ADDRESS, STS3X_CMD_READ_SERIAL_ID);
+    ret = sensirion_i2c_write_cmd(address, STS3X_CMD_READ_SERIAL_ID);
     if (ret)
         return ret;
 
     sensirion_sleep_usec(STS3X_CMD_DURATION_USEC);
 
-    ret = sensirion_i2c_read_words_as_bytes(STS3X_ADDRESS, serial_bytes,
+    ret = sensirion_i2c_read_words_as_bytes(address, serial_bytes,
                                             SENSIRION_NUM_WORDS(serial_bytes));
     *serial = sensirion_bytes_to_uint32_t(serial_bytes);
     return ret;
 }
 
-int16_t sts3x_heater_off(void) {
-    return sensirion_i2c_write_cmd(STS3X_ADDRESS, STS3X_CMD_HEATER_OFF);
+int16_t sts3x_heater_off(uint8_t address) {
+    return sensirion_i2c_write_cmd(address, STS3X_CMD_HEATER_OFF);
 }
 
 const char* sts3x_get_driver_version() {
