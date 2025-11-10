@@ -45,7 +45,7 @@ int main(void) {
     /* Busy loop for initialization, because the main loop does not work without
      * a sensor.
      */
-    while (sts3x_probe() != STATUS_OK) {
+    while (sts3x_probe(STS3X_ADDR_PIN_LOW_ADDRESS) != STATUS_OK) {
         printf("STS sensor probing failed\n");
         sensirion_sleep_usec(1000000);
     }
@@ -57,7 +57,7 @@ int main(void) {
         /* Measure temperature  and store into variable temperature
          * (output is multiplied by 1000).
          */
-        int16_t ret = sts3x_measure_blocking_read(&temperature);
+        int16_t ret = sts3x_measure_blocking_read(STS3X_ADDR_PIN_LOW_ADDRESS, &temperature);
         if (ret == STATUS_OK) {
             temperature_degree = temperature / 1000.0f;
             printf("measured temperature: %0.2f degreeCelsius\n",
