@@ -61,7 +61,7 @@ static const uint16_t STS3X_CMD_HEATER_OFF = 0x3066;
 #ifdef STS_ADDRESS
 static const uint8_t STS3X_ADDRESS = STS_ADDRESS;
 #else
-static const uint8_t STS3X_ADDRESS = 0x4A;
+static const uint8_t STS3X_ADDRESS = STS3X_ADDR_PIN_LOW_ADDRESS;
 #endif
 
 static uint16_t sts3x_cmd_measure = STS3X_CMD_MEASURE_HPM;

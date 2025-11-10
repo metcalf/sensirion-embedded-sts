@@ -56,6 +56,9 @@ extern "C" {
 
 #define STS3X_MEASUREMENT_DURATION_USEC 15500
 
+#define STS3X_ADDR_PIN_LOW_ADDRESS 0x4A
+#define STS3X_ADDR_PIN_HIGH_ADDRESS 0x4B
+
 /**
  * Detects if a sensor is connected by reading out the ID register.
  * If the sensor does not answer or if the answer is not the expected value,
