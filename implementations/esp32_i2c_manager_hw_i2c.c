@@ -32,7 +32,7 @@
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "i2c_manager.h"
+#include "i2c_bus.h"
 
 #include "sensirion_arch_config.h"
 #include "sensirion_common.h"
@@ -92,7 +92,7 @@ void sensirion_i2c_release(void) {
  */
 int8_t sensirion_i2c_read(uint8_t address, uint8_t* data, uint16_t count) {
     ESP_LOGD(TAG, "Read: %u bytes from %02x", count, address);
-    return i2c_manager_read(I2C_NUM_0, address, I2C_NO_REG, data, count);
+    return i2c_bus_read(address, data, count);
 }
 
 /**
@@ -109,8 +109,7 @@ int8_t sensirion_i2c_read(uint8_t address, uint8_t* data, uint16_t count) {
 int8_t sensirion_i2c_write(uint8_t address, const uint8_t* data,
                            uint16_t count) {
     ESP_LOGD(TAG, "Write: %u bytes to %02x", count, address);
-    return i2c_manager_write(I2C_NUM_0, address, I2C_NO_REG, (uint8_t*)data,
-                             count);
+    return i2c_bus_write(address, (uint8_t*)data, count);
 }
 
 /**
